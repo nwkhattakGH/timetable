@@ -59,6 +59,50 @@
             font-size: 14px;
             color: #444;
         }
+        .stacked-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    font-size: 18px;
+}
+
+.stacked-table th,
+.stacked-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+.begin-col {
+    background: #0a7d45;
+    color: white;
+}
+
+.jamat-col {
+    background: #0c8f4f;
+    color: white;
+}
+
+.stacked-table th {
+    background: #0a7d45;
+    color: white;
+}
+
+.spacer-row td {
+    border: none;
+    height: 10px;
+}
+
+/* Mobile stacking */
+@media (max-width: 600px) {
+    .stacked-table {
+        font-size: 16px;
+    }
+    .stacked-table td, .stacked-table th {
+        padding: 8px;
+    }
+}
+
     </style>
 </head>
 
@@ -99,42 +143,41 @@ function generateTableHTML(data) {
         <div class="jummah-note">FRIDAY (JUM’AH) PRAYER TIME WILL BE THE SAME AS THE ZUHR PRAYER TIME</div>
     </div>
 
-    <table>
+    <table class="stacked-table">
         <tr>
-            <th>Date</th>
-            <th>Fajr</th>
-            <th>Fajr Jamat</th>
-            <th>Sunrise</th>
-            <th>Zuhr</th>
-            <th>Zuhr Jamat</th>
-            <th>Asr</th>
-            <th>Asr Jamat</th>
-            <th>Maghrib</th>
-            <th>Isha</th>
-            <th>Isha Jamat</th>
+            <th class="begin-col" colspan="2">Beginning</th>
+            <th class="jamat-col" colspan="2">Jamat Times</th>
+        </tr>
+        <tr>
+            <th>Prayer</th>
+            <th>Time</th>
+            <th>Prayer</th>
+            <th>Jamat</th>
         </tr>
     `;
 
     data.forEach(row => {
         html += `
-        <tr>
-            <td>${row.DATE}</td>
-            <td>${row.FAJR}</td>
-            <td>${row["FAJR JAMAT"]}</td>
-            <td>${row.SUNRISE}</td>
-            <td>${row.ZUHR}</td>
-            <td>${row["ZUHR JAMAT"]}</td>
-            <td>${row.ASR}</td>
-            <td>${row["ASR JAMAT"]}</td>
-            <td>${row.MAGHRIB}</td>
-            <td>${row.ISHA}</td>
-            <td>${row["ISHA JAMAT"]}</td>
-        </tr>`;
+        <tr><td>Date</td><td>${row.DATE}</td><td></td><td></td></tr>
+
+        <tr><td>Fajr</td><td>${row.FAJR}</td><td>Fajr Jamat</td><td>${row["FAJR JAMAT"]}</td></tr>
+
+        <tr><td>Zuhr</td><td>${row.ZUHR}</td><td>Zuhr Jamat</td><td>${row["ZUHR JAMAT"]}</td></tr>
+
+        <tr><td>Asr</td><td>${row.ASR}</td><td>Asr Jamat</td><td>${row["ASR JAMAT"]}</td></tr>
+
+        <tr><td>Maghrib</td><td>${row.MAGHRIB}</td><td></td><td></td></tr>
+
+        <tr><td>Isha</td><td>${row.ISHA}</td><td>Isha Jamat</td><td>${row["ISHA JAMAT"]}</td></tr>
+
+        <tr class="spacer-row"><td colspan="4"></td></tr>
+        `;
     });
 
     html += `</table>`;
     return html;
 }
+
 
 document.getElementById("printTimetable").addEventListener("click", async () => {
     const filteredData = await fetchSheet();
