@@ -109,8 +109,21 @@ h2 {
 async function fetchSheet() {
     const url = "https://opensheet.vercel.app/10uilaYxTqZutr5xmKKeInZggg_zgcRvuTKG0UULmxb4/Sheet1";
     const res = await fetch(url);
-    return await res.json();
+    const data = await res.json();
+
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1; // 1–12
+
+    // DATE format: DD-MM-YYYY
+    return data.filter(row => {
+        if (!row.DATE) return false;
+        const parts = row.DATE.split("-");
+        if (parts.length !== 3) return false;
+        const monthFromSheet = Number(parts[1]); // MM
+        return monthFromSheet === currentMonth;
+    });
 }
+
 
 function generateTableHTML(data) {
     let html = `
