@@ -88,13 +88,16 @@ function generateMonthlyTableHTML(data) {
 
 // Print handler
 document.getElementById("printTimetable").addEventListener("click", async () => {
+
+    // OPEN POPUP FIRST (fixes GitHub Pages popup blocking)
+    const printWindow = window.open("", "_blank");
+
+    // THEN fetch data
     const monthData = await fetchMonthData();
 
     const now = new Date();
     const currentMonthName = now.toLocaleString("en-GB", { month: "long" });
     const currentYear = now.getFullYear();
-
-    const printWindow = window.open("", "_blank");
 
     printWindow.document.write(`
 <html>
@@ -189,6 +192,7 @@ ${generateMonthlyTableHTML(monthData)}
     printWindow.print();
 });
 </script>
+
 
 </body>
 </html>
