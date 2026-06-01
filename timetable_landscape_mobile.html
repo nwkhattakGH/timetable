@@ -43,17 +43,25 @@
             text-align: center;
         }
 
-        /* UPDATED AS REQUESTED */
+        /* Beginning Time header */
         .begin-head {
-            background: #eaeaea;   /* light grey */
-            color: black;          /* black text */
+            background: #eaeaea;
+            color: black;
             font-size: 20px;
         }
 
+        /* Jama'ah Time header */
         .jamat-head {
-            background: #0c8f4f;   /* green */
-            color: black;          /* black text */
+            background: #0c8f4f;
+            color: white;
             font-size: 20px;
+        }
+
+        /* Column headers under Jama'ah Time */
+        .jamat-col {
+            background: #0c8f4f;
+            color: white;
+            font-weight: bold;
         }
 
         .fullmonth-table th {
@@ -71,6 +79,7 @@
             margin-top: 5px;
             font-size: 14px;
             color: #444;
+            font-weight: bold; /* NEW */
         }
 
         .table-footer {
@@ -140,10 +149,10 @@ function generateTableHTML(data) {
             <th>Maghrib</th>
             <th>Isha</th>
 
-            <th>Fajr Jamat</th>
-            <th>Zuhr Jamat</th>
-            <th>Asr Jamat</th>
-            <th>Isha Jamat</th>
+            <th class="jamat-col">Fajr Jamat</th>
+            <th class="jamat-col">Zuhr Jamat</th>
+            <th class="jamat-col">Asr Jamat</th>
+            <th class="jamat-col">Isha Jamat</th>
         </tr>
     `;
 
@@ -190,9 +199,14 @@ function openPrintFriendly(html) {
                 table { width: 100%; border-collapse: collapse; font-size: 18px; }
                 th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
                 th { background: #eaeaea; }
+
                 .begin-head { background: #eaeaea; color: black; }
-                .jamat-head { background: #0c8f4f; color: black; }
+                .jamat-head { background: #0c8f4f; color: white; }
+
+                .jamat-col { background: #0c8f4f; color: white; font-weight: bold; }
+
                 .header { text-align: center; margin-bottom: 20px; }
+
                 .table-footer {
                     margin-top: 25px;
                     font-size: 18px;
@@ -204,6 +218,8 @@ function openPrintFriendly(html) {
                     border: 1px solid #ccc;
                     border-radius: 6px;
                 }
+
+                .jummah-note { font-weight: bold; }
             </style>
         </head>
         <body>
