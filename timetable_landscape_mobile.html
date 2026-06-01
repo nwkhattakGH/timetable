@@ -1,110 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Prayer Timetable</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 40px;
-}
-
-#printTimetable {
-    padding: 14px 22px;
-    background: #0a5;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    max-width: 350px;
-}
-
-@media (max-width: 600px) {
-    #printTimetable {
-        font-size: 20px;
-        padding: 16px;
-        width: 90%;
-    }
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-    font-size: 14px;
-}
-
-th {
-    background: #0a5;
-    color: white;
-    padding: 10px;
-    border: 1px solid #0a5;
-}
-
-td {
-    padding: 8px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.logo {
-    width: 160px;
-    margin-bottom: 10px;
-}
-
-h1 {
-    font-size: 32px;
-    margin: 0;
-    color: #0a5;
-}
-
-h2 {
-    font-size: 22px;
-    margin-top: 5px;
-    color: #0a5;
-}
-
-.jummah-note {
-    text-align: center;
-    font-size: 17px;
-    margin-top: 5px;
-    color: #0a5;
-    font-weight: bold;
-}
-
-.footer {
-    margin-top: 35px;
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #0a5;
-}
-
-.donate {
-    margin-top: 10px;
-    font-weight: bold;
-    color: #b30000;
-    font-size: 17px;
-}
-</style>
-
-</head>
-<body>
-
-<button id="printTimetable">📅 Show Full Month Prayer Timetable</button>
-
-<div id="timetableContainer"></div>
-
 <script>
 async function fetchSheet() {
     const url = "https://opensheet.vercel.app/10uilaYxTqZutr5xmKKeInZggg_zgcRvuTKG0UULmxb4/Sheet1";
@@ -114,20 +7,17 @@ async function fetchSheet() {
     const now = new Date();
     const currentMonth = now.getMonth() + 1; // 1–12
 
-    return data.filter(row => {
+    // Filter by current month (DD-MM-YYYY)
+    const filtered = data.filter(row => {
         if (!row.DATE) return false;
-
-        // Split by "-" and convert safely
         const parts = row.DATE.split("-");
         if (parts.length !== 3) return false;
-
-        const monthFromSheet = parseInt(parts[1], 10); // handles 5 or 05
-
+        const monthFromSheet = parseInt(parts[1], 10);
         return monthFromSheet === currentMonth;
     });
+
+    return filtered;
 }
-
-
 
 function generateTableHTML(data) {
     let html = `
@@ -157,38 +47,27 @@ function generateTableHTML(data) {
     data.forEach(row => {
         html += `
         <tr>
-            <td>${row.DATE || ""}</td>
-            <td>${row.FAJR || ""}</td>
-            <td>${row["FAJR JAMAT"] || ""}</td>
-            <td>${row.SUNRISE || ""}</td>
-            <td>${row.ZUHR || ""}</td>
-            <td>${row["ZUHR JAMAT"] || ""}</td>
-            <td>${row.ASR || ""}</td>
-            <td>${row["ASR JAMAT"] || ""}</td>
-            <td>${row.MAGHRIB || ""}</td>
-            <td>${row.ISHA || ""}</td>
-            <td>${row["ISHA JAMAT"] || ""}</td>
+            <td>${row.DATE}</td>
+            <td>${row.FAJR}</td>
+            <td>${row["FAJR JAMAT"]}</td>
+            <td>${row.SUNRISE}</td>
+            <td>${row.ZUHR}</td>
+            <td>${row["ZUHR JAMAT"]}</td>
+            <td>${row.ASR}</td>
+            <td>${row["ASR JAMAT"]}</td>
+            <td>${row.MAGHRIB}</td>
+            <td>${row.ISHA}</td>
+            <td>${row["ISHA JAMAT"]}</td>
         </tr>`;
     });
 
-    html += `</table>
-
-    <div class="footer">
-        1–3 SANDHURST AVENUE, HAREHILLS, LS8 3QT, LEEDS<br>
-        CHARITY NUMBER: 1128184<br>
-        <div class="donate">SUPPORT YOUR MASJID PLEASE</div>
-        BANK: NATWEST | ACC NUM: 33737738 | SORT CODE: 56-00-54
-    </div>`;
-
+    html += `</table>`;
     return html;
 }
 
 document.getElementById("printTimetable").addEventListener("click", async () => {
-    const data = await fetchSheet();
-    const html = generateTableHTML(data);
+    const filteredData = await fetchSheet();   // ← USE FILTERED DATA
+    const html = generateTableHTML(filteredData);
     document.getElementById("timetableContainer").innerHTML = html;
 });
 </script>
-
-</body>
-</html>
