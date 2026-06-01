@@ -208,10 +208,9 @@ function generateTableHTML(data) {
 document.getElementById("printTimetable").addEventListener("click", async () => {
     const filteredData = await fetchSheet();
     const html = generateTableHTML(filteredData);
-    document.getElementById("timetableContainer").innerHTML = html;
+    document.getElementById("timetableContainer").innerHTML =
+    `<div class="table-wrapper">` + html + `</div>`;
 
-    // Open print dialog automatically
-    window.print();
 });
 
 </script>
