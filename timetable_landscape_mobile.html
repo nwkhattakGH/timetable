@@ -132,11 +132,22 @@ async function fetchSheet() {
 
 function generateTableHTML(data) {
     let html = `
-    <div class="header">
-        <h1>Leeds Afghan Education Centre</h1>
-        <h2>Prayer Timetable</h2>
+    <div class="header" style="display:flex; align-items:center; justify-content:center; gap:20px;">
+
+    <img src="https://drive.google.com/uc?export=view&id=15v9rvTdhoFcDF3ZErfXxYB_RBqcFk7oQ" 
+         style="height:70px; width:auto;">
+
+    <div>
+        <h1 style="margin:0;">Leeds Afghan Education Centre</h1>
+        <h2 style="margin:0;">Prayer Timetable</h2>
         <div class="jummah-note">FRIDAY (JUM’AH) PRAYER TIME WILL BE THE SAME AS THE ZUHR PRAYER TIME</div>
     </div>
+
+    <img src="https://drive.google.com/uc?export=view&id=15v9rvTdhoFcDF3ZErfXxYB_RBqcFk7oQ" 
+         style="height:70px; width:auto;">
+
+</div>
+
 
     <table class="fullmonth-table">
 
