@@ -114,15 +114,19 @@ async function fetchSheet() {
     const now = new Date();
     const currentMonth = now.getMonth() + 1; // 1–12
 
-    // DATE format: DD-MM-YYYY
     return data.filter(row => {
         if (!row.DATE) return false;
+
+        // Split by "-" and convert safely
         const parts = row.DATE.split("-");
         if (parts.length !== 3) return false;
-        const monthFromSheet = Number(parts[1]); // MM
+
+        const monthFromSheet = parseInt(parts[1], 10); // handles 5 or 05
+
         return monthFromSheet === currentMonth;
     });
 }
+
 
 
 function generateTableHTML(data) {
