@@ -47,9 +47,10 @@ async function fetchMonthData() {
     const res = await fetch(url);
     const data = await res.json();
 
-    // 🔹 TEMP: return all rows (no month filter)
+    // Return everything exactly as in the sheet
     return data;
 }
+
 
 
 // Build monthly table HTML (Option B layout)
