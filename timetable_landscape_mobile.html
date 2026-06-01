@@ -29,7 +29,6 @@ async function fetchSheet() {
 function generateTableHTML(data) {
     let html = `
     <div class="header">
-        <img class="logo" src="https://drive.google.com/uc?export=view&id=15v9rvTdhoFcDF3ZErfXxYB_RBqcFk7oQ" />
         <h1>Leeds Afghan Education Centre</h1>
         <h2>Prayer Timetable</h2>
         <div class="jummah-note">FRIDAY (JUM’AH) PRAYER TIME WILL BE THE SAME AS THE ZUHR PRAYER TIME</div>
@@ -71,6 +70,7 @@ function generateTableHTML(data) {
     html += `</table>`;
     return html;
 }
+
 
 document.getElementById("printTimetable").addEventListener("click", async () => {
     const filteredData = await fetchSheet();   // ← USE FILTERED DATA
