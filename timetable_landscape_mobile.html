@@ -84,6 +84,19 @@
                 padding: 6px;
             }
         }
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 0 auto;
+    padding: 0 5px; /* equal spacing on both sides */
+}
+
+.fullmonth-table {
+    width: 100%;
+    min-width: 650px; /* prevents squashing */
+}
+
+        
     </style>
 </head>
 
@@ -173,7 +186,9 @@ function generateTableHTML(data) {
 document.getElementById("printTimetable").addEventListener("click", async () => {
     const filteredData = await fetchSheet();
     const html = generateTableHTML(filteredData);
-    document.getElementById("timetableContainer").innerHTML = html;
+    document.getElementById("timetableContainer").innerHTML =
+    `<div class="table-wrapper">` + html + `</div>`;
+
 });
 </script>
 
