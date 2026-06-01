@@ -47,18 +47,10 @@ async function fetchMonthData() {
     const res = await fetch(url);
     const data = await res.json();
 
-    const now = new Date();
-    const currentMonth = now.getMonth() + 1; // 1–12
-
-    // DATE format: DD-MM-YYYY
-    return data.filter(row => {
-        if (!row.DATE) return false;
-        const parts = row.DATE.split("-");
-        if (parts.length !== 3) return false;
-        const monthFromSheet = Number(parts[1]); // MM
-        return monthFromSheet === currentMonth;
-    });
+    // 🔹 TEMP: return all rows (no month filter)
+    return data;
 }
+
 
 // Build monthly table HTML (Option B layout)
 function generateMonthlyTableHTML(data) {
