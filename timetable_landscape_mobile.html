@@ -122,6 +122,7 @@
 </button>
 
 <div id="timetableContainer"></div>
+<div id="printButtonContainer" style="text-align:center; margin-top:15px;"></div>
 
 <script>
 async function fetchSheet() {
@@ -208,13 +209,52 @@ function generateTableHTML(data) {
     return html;
 }
 
+function openPrintFriendly(html) {
+    const newTab = window.open("", "_blank");
+    newTab.document.write(`
+        <html>
+        <head>
+            <title>Print Friendly Timetable</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                table { width: 100%; border-collapse: collapse; font-size: 18px; }
+                th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+                th { background: #eaeaea; }
+                .begin-head { background: #0a7d45; color: white; }
+                .jamat-head { background: #0c8f4f; color: white; }
+                .header { text-align: center; margin-bottom: 20px; }
+                .table-footer { margin-top: 20px; font-size: 14px; }
+            </style>
+        </head>
+        <body>
+            ${html}
+        </body>
+        </html>
+    `);
+    newTab.document.close();
+}
+
 document.getElementById("printTimetable").addEventListener("click", async () => {
     const filteredData = await fetchSheet();
     const html = generateTableHTML(filteredData);
-    document.getElementById("timetableContainer").innerHTML =
-    `<div class="table-wrapper">` + html + `</div>`;
 
+    document.getElementById("timetableContainer").innerHTML =
+        `<div class="table-wrapper">` + html + `</div>`;
+
+    // Add Print Friendly button
+    document.getElementById("printButtonContainer").innerHTML = `
+        <button id="printFriendlyBtn" class="big-green-btn" style="width:60%; font-size:16px;">
+            Print Friendly Version
+        </button>
+    `;
+
+    // Attach click event
+    document.getElementById("printFriendlyBtn").addEventListener("click", () => {
+        openPrintFriendly(html);
+    });
 });
+
+
 </script>
 
 </body>
