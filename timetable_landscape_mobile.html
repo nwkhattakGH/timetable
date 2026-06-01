@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Print Monthly Timetable</title>
+<title>Prayer Timetable</title>
 
 <style>
 body {
@@ -11,7 +11,6 @@ body {
     padding: 40px;
 }
 
-/* Mobile-friendly button */
 #printTimetable {
     padding: 14px 22px;
     background: #0a5;
@@ -25,7 +24,6 @@ body {
     max-width: 350px;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 600px) {
     #printTimetable {
         font-size: 20px;
@@ -33,31 +31,97 @@ body {
         width: 90%;
     }
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+th {
+    background: #0a5;
+    color: white;
+    padding: 10px;
+    border: 1px solid #0a5;
+}
+
+td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 160px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 0;
+    color: #0a5;
+}
+
+h2 {
+    font-size: 22px;
+    margin-top: 5px;
+    color: #0a5;
+}
+
+.jummah-note {
+    text-align: center;
+    font-size: 17px;
+    margin-top: 5px;
+    color: #0a5;
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 35px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #0a5;
+}
+
+.donate {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #b30000;
+    font-size: 17px;
+}
 </style>
 
 </head>
 <body>
 
-<button id="printTimetable">🖨️ Print Monthly Timetable</button>
+<button id="printTimetable">📅 Show Prayer Timetable</button>
+
+<div id="timetableContainer"></div>
 
 <script>
-// Fetch Google Sheet via OpenSheet
-async function fetchMonthData() {
+async function fetchSheet() {
     const url = "https://opensheet.elk.sh/10uilaYxTqZutr5xmKKeInZggg_zgcRvuTKG0UULmxb4/Sheet1";
     const res = await fetch(url);
-    const data = await res.json();
-
-    // Return everything exactly as in the sheet
-    return data;
+    return await res.json();
 }
 
-
-
-// Build monthly table HTML (Option B layout)
-function generateMonthlyTableHTML(data) {
+function generateTableHTML(data) {
     let html = `
-    <div style="overflow-x:auto;">
-    <table style="min-width:900px; border-collapse:collapse; width:100%;">
+    <div class="header">
+        <img class="logo" src="https://drive.google.com/uc?export=view&id=15v9rvTdhoFcDF3ZErfXxYB_RBqcFk7oQ" />
+        <h1>Leeds Afghan Education Centre</h1>
+        <h2>Prayer Timetable</h2>
+        <div class="jummah-note">FRIDAY (JUM’AH) PRAYER TIME WILL BE THE SAME AS THE ZUHR PRAYER TIME</div>
+    </div>
+
+    <table>
         <tr>
             <th>Date</th>
             <th>Fajr</th>
@@ -90,114 +154,22 @@ function generateMonthlyTableHTML(data) {
         </tr>`;
     });
 
-    html += "</table></div>";
+    html += `</table>
+
+    <div class="footer">
+        1–3 SANDHURST AVENUE, HAREHILLS, LS8 3QT, LEEDS<br>
+        CHARITY NUMBER: 1128184<br>
+        <div class="donate">SUPPORT YOUR MASJID PLEASE</div>
+        BANK: NATWEST | ACC NUM: 33737738 | SORT CODE: 56-00-54
+    </div>`;
+
     return html;
 }
 
-// Print handler
 document.getElementById("printTimetable").addEventListener("click", async () => {
-    // Open popup first so browser doesn't block it
-    const printWindow = window.open("", "_blank");
-
-    const monthData = await fetchMonthData();
-
-    const now = new Date();
-    const currentMonthName = now.toLocaleString("en-GB", { month: "long" });
-    const currentYear = now.getFullYear();
-
-    printWindow.document.write(`
-<html>
-<head>
-<title>Monthly Prayer Timetable</title>
-
-<style>
-@page { size: A4 landscape; }
-
-body { 
-    font-family: Arial, sans-serif; 
-    padding: 30px; 
-    color: #1a1a1a; 
-    background: white; 
-}
-
-.header { text-align: center; margin-bottom: 20px; }
-.logo { width: 160px; margin-bottom: 10px; }
-
-h1 { font-size: 32px; margin: 0; color: #0a5; }
-h2 { font-size: 22px; margin-top: 5px; color: #0a5; }
-
-.jummah-note { 
-    text-align: center; 
-    font-size: 17px; 
-    margin-top: 5px; 
-    color: #0a5; 
-    font-weight: bold; 
-}
-
-table { 
-    width: 100%; 
-    border-collapse: collapse; 
-    margin-top: 25px; 
-    font-size: 14px; 
-}
-
-th { 
-    background: #0a5; 
-    color: white; 
-    padding: 8px; 
-    border: 1px solid #0a5; 
-}
-
-td { 
-    padding: 6px; 
-    border: 1px solid #ccc; 
-    text-align: center; 
-}
-
-.footer { 
-    margin-top: 35px; 
-    text-align: center; 
-    font-size: 16px; 
-    line-height: 1.6; 
-    color: #0a5; 
-}
-
-.donate { 
-    margin-top: 10px; 
-    font-weight: bold; 
-    color: #b30000; 
-    font-size: 17px; 
-}
-</style>
-
-</head>
-<body>
-
-<div class="header">
-    <img class="logo" src="https://drive.google.com/uc?export=view&id=15v9rvTdhoFcDF3ZErfXxYB_RBqcFk7oQ" />
-    <h1>Leeds Afghan Education Centre</h1>
-    <h2>Monthly Prayer Timetable – ${currentMonthName} ${currentYear}</h2>
-    <div class="jummah-note">FRIDAY (JUM’AH) PRAYER TIME WILL BE THE SAME AS THE ZUHR PRAYER TIME</div>
-</div>
-
-${generateMonthlyTableHTML(monthData)}
-
-<div class="footer">
-    1-3 SANDHURST AVENUE, HAREHILLS, LS8 3QT, LEEDS<br>
-    CHARITY NUMBER: 1128184<br>
-    <div class="donate">SUPPORT YOUR MASJID PLEASE</div>
-    BANK: NATWEST | ACC NUM: 33737738 | SORT CODE: 56-00-54
-</div>
-
-</body>
-</html>
-    `);
-
-    printWindow.document.close();
-    printWindow.onload = () => {
-        printWindow.focus();
-        printWindow.print();
-    };
+    const data = await fetchSheet();
+    const html = generateTableHTML(data);
+    document.getElementById("timetableContainer").innerHTML = html;
 });
 </script>
 
