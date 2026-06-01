@@ -48,37 +48,52 @@ async function fetchMonthData() {
     const data = await res.json();
 
     const now = new Date();
-    const month = now.getMonth() + 1;
+    const currentMonth = now.getMonth() + 1; // 1–12
 
-    return data.filter(row => Number(row.month) === month);
+    // DATE format: DD-MM-YYYY
+    return data.filter(row => {
+        if (!row.DATE) return false;
+        const parts = row.DATE.split("-");
+        if (parts.length !== 3) return false;
+        const monthFromSheet = Number(parts[1]); // MM
+        return monthFromSheet === currentMonth;
+    });
 }
 
-// Build monthly table HTML
+// Build monthly table HTML (Option B layout)
 function generateMonthlyTableHTML(data) {
     let html = `
     <div style="overflow-x:auto;">
-    <table style="min-width:900px;">
+    <table style="min-width:900px; border-collapse:collapse; width:100%;">
         <tr>
             <th>Date</th>
             <th>Fajr</th>
+            <th>Fajr Jamat</th>
             <th>Sunrise</th>
             <th>Zuhr</th>
+            <th>Zuhr Jamat</th>
             <th>Asr</th>
+            <th>Asr Jamat</th>
             <th>Maghrib</th>
             <th>Isha</th>
+            <th>Isha Jamat</th>
         </tr>
     `;
 
     data.forEach(row => {
         html += `
         <tr>
-            <td>${row.date}</td>
-            <td>${row.fajr}</td>
-            <td>${row.sunrise}</td>
-            <td>${row.zuhr}</td>
-            <td>${row.asr}</td>
-            <td>${row.maghrib}</td>
-            <td>${row.isha}</td>
+            <td>${row.DATE || ""}</td>
+            <td>${row.FAJR || ""}</td>
+            <td>${row["FAJR JAMAT"] || ""}</td>
+            <td>${row.SUNRISE || ""}</td>
+            <td>${row.ZUHR || ""}</td>
+            <td>${row["ZUHR JAMAT"] || ""}</td>
+            <td>${row.ASR || ""}</td>
+            <td>${row["ASR JAMAT"] || ""}</td>
+            <td>${row.MAGHRIB || ""}</td>
+            <td>${row.ISHA || ""}</td>
+            <td>${row["ISHA JAMAT"] || ""}</td>
         </tr>`;
     });
 
@@ -88,11 +103,9 @@ function generateMonthlyTableHTML(data) {
 
 // Print handler
 document.getElementById("printTimetable").addEventListener("click", async () => {
-
-    // OPEN POPUP FIRST (fixes GitHub Pages popup blocking)
+    // Open popup first so browser doesn't block it
     const printWindow = window.open("", "_blank");
 
-    // THEN fetch data
     const monthData = await fetchMonthData();
 
     const now = new Date();
@@ -132,18 +145,18 @@ table {
     width: 100%; 
     border-collapse: collapse; 
     margin-top: 25px; 
-    font-size: 16px; 
+    font-size: 14px; 
 }
 
 th { 
     background: #0a5; 
     color: white; 
-    padding: 12px; 
+    padding: 8px; 
     border: 1px solid #0a5; 
 }
 
 td { 
-    padding: 10px; 
+    padding: 6px; 
     border: 1px solid #ccc; 
     text-align: center; 
 }
@@ -188,11 +201,12 @@ ${generateMonthlyTableHTML(monthData)}
     `);
 
     printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+    printWindow.onload = () => {
+        printWindow.focus();
+        printWindow.print();
+    };
 });
 </script>
-
 
 </body>
 </html>
