@@ -43,21 +43,26 @@
             text-align: center;
         }
 
-        /* Beginning Time header */
+        /* ⭐ Beginning Time (Light Gold) */
         .begin-head {
-            background: #eaeaea;
+            background: #fff4d6;   /* light gold */
             color: black;
             font-size: 20px;
         }
 
-        /* Jama'ah Time header */
+        .begin-col {
+            background: #fff4d6;   /* same light gold */
+            color: black;
+            font-weight: bold;
+        }
+
+        /* ⭐ Jama'ah Time (Green + White) */
         .jamat-head {
             background: #0c8f4f;
             color: white;
             font-size: 20px;
         }
 
-        /* Column headers under Jama'ah Time */
         .jamat-col {
             background: #0c8f4f;
             color: white;
@@ -79,7 +84,7 @@
             margin-top: 5px;
             font-size: 14px;
             color: #444;
-            font-weight: bold; /* NEW */
+            font-weight: bold; /* bold as requested */
         }
 
         .table-footer {
@@ -142,12 +147,12 @@ function generateTableHTML(data) {
 
         <tr>
             <th>Date</th>
-            <th>Fajr</th>
-            <th>Sunrise</th>
-            <th>Zuhr</th>
-            <th>Asr</th>
-            <th>Maghrib</th>
-            <th>Isha</th>
+            <th class="begin-col">Fajr</th>
+            <th class="begin-col">Sunrise</th>
+            <th class="begin-col">Zuhr</th>
+            <th class="begin-col">Asr</th>
+            <th class="begin-col">Maghrib</th>
+            <th class="begin-col">Isha</th>
 
             <th class="jamat-col">Fajr Jamat</th>
             <th class="jamat-col">Zuhr Jamat</th>
@@ -200,9 +205,10 @@ function openPrintFriendly(html) {
                 th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
                 th { background: #eaeaea; }
 
-                .begin-head { background: #eaeaea; color: black; }
-                .jamat-head { background: #0c8f4f; color: white; }
+                .begin-head { background: #fff4d6; color: black; }
+                .begin-col { background: #fff4d6; color: black; font-weight: bold; }
 
+                .jamat-head { background: #0c8f4f; color: white; }
                 .jamat-col { background: #0c8f4f; color: white; font-weight: bold; }
 
                 .header { text-align: center; margin-bottom: 20px; }
