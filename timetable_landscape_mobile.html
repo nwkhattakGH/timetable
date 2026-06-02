@@ -28,80 +28,6 @@
             background-color: #0c8f4f;
             transform: scale(1.03);
         }
-
-        .fullmonth-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 25px;
-            font-size: 18px;
-        }
-
-        .fullmonth-table th,
-        .fullmonth-table td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
-        }
-
-        /* ⭐ Beginning Time (Cool Mint Green) */
-        .begin-head {
-            background: #e3f4f1;
-            color: black;
-            font-size: 20px;
-        }
-
-        .begin-col {
-            background: #e3f4f1;
-            color: black;
-            font-weight: bold;
-        }
-
-        /* ⭐ Jama'ah Time (Green + White) */
-        .jamat-head {
-            background: #0c8f4f;
-            color: white;
-            font-size: 20px;
-        }
-
-        .jamat-col {
-            background: #0c8f4f;
-            color: white;
-            font-weight: bold;
-        }
-
-        .fullmonth-table th {
-            background: #eaeaea;
-            font-weight: bold;
-            color: black;
-        }
-
-        .header {
-            text-align: center;
-            margin-top: 20px;
-            background: #e3f4f1;   /* Cool Mint Green */
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .jummah-note {
-            margin-top: 5px;
-            font-size: 14px;
-            color: #444;
-            font-weight: bold;
-        }
-
-        .table-footer {
-            background: #e3f4f1;   /* Cool Mint Green */
-            color: black;
-            padding: 15px;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-            line-height: 1.5;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-weight: bold;
-        }
     </style>
 </head>
 
@@ -111,26 +37,11 @@
     Show Full Month Timetable
 </button>
 
-<div id="timetableContainer"></div>
-
 <script>
 async function fetchSheet() {
     const url = "https://opensheet.vercel.app/10uilaYxTqZutr5xmKKeInZggg_zgcRvuTKG0UULmxb4/Sheet1";
     const res = await fetch(url);
-    const data = await res.json();
-
-    const now = new Date();
-    const currentMonth = now.getMonth() + 1;
-
-    const filtered = data.filter(row => {
-        if (!row.DATE) return false;
-        const parts = row.DATE.split("-");
-        if (parts.length !== 3) return false;
-        const monthFromSheet = parseInt(parts[1], 10);
-        return monthFromSheet === currentMonth;
-    });
-
-    return filtered;
+    return await res.json();
 }
 
 function generateTableHTML(data) {
@@ -246,12 +157,9 @@ function openPrintFriendly(html) {
 }
 
 document.getElementById("printTimetable").addEventListener("click", async () => {
-    const filteredData = await fetchSheet();
-    const html = generateTableHTML(filteredData);
-
+    const data = await fetchSheet();
+    const html = generateTableHTML(data);
     openPrintFriendly(html);
-
-    document.getElementById("timetableContainer").innerHTML = "";
 });
 </script>
 
