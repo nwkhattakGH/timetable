@@ -41,17 +41,7 @@
 async function fetchSheet() {
     const url = "https://opensheet.vercel.app/10uilaYxTqZutr5xmKKeInZggg_zgcRvuTKG0UULmxb4/Sheet1";
     const res = await fetch(url);
-    const data = await res.json();
-
-    const now = new Date();
-    const currentMonth = now.getMonth() + 1;
-
-    return data.filter(row => {
-        if (!row.DATE) return false;
-        const parts = row.DATE.split("-");
-        if (parts.length !== 3) return false;
-        return parseInt(parts[1], 10) === currentMonth;
-    });
+    return await res.json(); // ⭐ NO FILTERING
 }
 
 function generateTableHTML(data) {
